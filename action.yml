@@ -1,0 +1,39 @@
+name: 'unity-ci-self-hosted-builder'
+description: 'Unity CI self-hosted building action'
+author: 'Marco Selleri <marco.selleri96@gmail.com>'
+
+branding:
+  icon: 'heart'
+  color: 'red'
+
+inputs:
+  unityVersion:
+    required: true
+    description: 'Version of unity.'
+  unityProjectPath:
+    required: false
+    description: 'Path to the Unity project or package to be tested.'
+  unityCustomArguments:
+    required: false
+    description: 'Extra parameters to configure the Unity editor run.'
+  unityBuildName:
+    required: true
+    description: 'Unity build name.'
+  unityBuildVersion:
+    required: true
+    description: 'Unity build version.'
+  unityBuildTarget:
+    required: true
+    description: 'Unity build target platform. Currently only supported: StandaloneWindows64'
+  unityBuildMethod:
+    required: false
+    default: BuildCommand.PerformBuild
+    description: 'Unity C# method used for building the project. Should be in the form of <classname>.<methodname>. The file containing the method should be in the Assets folder.'
+  unityBuildPath:
+    required: false
+    default: build
+    description: 'Path to the Unity build output folder.'
+
+runs:
+  using: node20
+  main: dist/index.js
