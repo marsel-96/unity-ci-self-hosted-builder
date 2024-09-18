@@ -27,11 +27,11 @@ inputs:
     description: 'Unity build target platform. Currently only supported: StandaloneWindows64'
   unityBuildMethod:
     required: false
-    default: BuildCommand.PerformBuild
+    default: 'BuildCommand.PerformBuild'
     description: 'Unity C# method used for building the project. Should be in the form of <classname>.<methodname>. The file containing the method should be in the Assets folder.'
   unityBuildPath:
     required: false
-    default: build
+    default: 'build'
     description: 'Path to the Unity build output folder.'
 
 runs:
