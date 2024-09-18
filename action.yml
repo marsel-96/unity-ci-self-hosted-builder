@@ -34,6 +34,16 @@ inputs:
     default: 'build'
     description: 'Path to the Unity build output folder.'
 
+outputs:
+  unityBuildPath:
+    description: 'Path to the Unity build output folder.'
+  unityBuildName:
+    description: 'Unity build name.'
+  unityBuildVersion:
+    description: 'Unity build version.'
+  unityBuildTarget:
+    description: 'Unity build target platform'
+  
 runs:
   using: node20
   main: dist/index.js

@@ -25151,6 +25151,10 @@ async function run() {
         if (exitCode === 0) {
             (0, dist_2.logLines)('', '', 'Build Succeeded!!', '', '###########################', '#       Build output      #', '###########################');
             await (0, dist_1.runCommand)('powershell', ['Get-ChildItem', unityBuildFullpath]);
+            core.setOutput('unityBuildPath', unityBuildFullpath);
+            core.setOutput('unityBuildName', input_1.variables.unityBuildName.value);
+            core.setOutput('unityBuildVersion', input_1.variables.unityBuildVersion.value);
+            core.setOutput('unityBuildTarget', input_1.variables.unityBuildTarget.value);
         }
         else {
             console.error("If you get a 'Native Crash Reporting' at UnityEditor.Utils.IconUtility:AddIconToWindowsExecutable try running the build again. God knows why it might work the second time.");

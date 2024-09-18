@@ -54,6 +54,11 @@ export async function run(): Promise<void> {
 
       await runCommand('powershell', ['Get-ChildItem', unityBuildFullpath])
 
+      core.setOutput('unityBuildPath', unityBuildFullpath)
+      core.setOutput('unityBuildName', variables.unityBuildName.value)
+      core.setOutput('unityBuildVersion', variables.unityBuildVersion.value)
+      core.setOutput('unityBuildTarget', variables.unityBuildTarget.value)
+      
     } else {
       console.error("If you get a 'Native Crash Reporting' at UnityEditor.Utils.IconUtility:AddIconToWindowsExecutable try running the build again. God knows why it might work the second time.");
       throw new Error(`Build Run with mode failed! Exit Code ${exitCode}`);
