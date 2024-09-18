@@ -4,7 +4,7 @@ author: 'Marco Selleri <marco.selleri96@gmail.com>'
 
 branding:
   icon: 'heart'
-  color: 'red'
+  color: 'green'
 
 inputs:
   unityVersion:
