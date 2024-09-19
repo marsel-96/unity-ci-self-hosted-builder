@@ -13,16 +13,21 @@ export let variables = {
         mandatory: false, 
         default: getUnityPath('windows', core.getInput('unityVersion'))
     },
+    UNITY_PROJECT_SUBFOLDER: <Value>{
+        value: process.env.UNITY_PROJECT_SUBFOLDER,
+        mandatory: false,
+        default: ''
+    },
 
     // Github action inputs
-    unityVersion:           <Value>{ value: core.getInput('unityVersion'),          mandatory: true                                             },
-    unityProjectPath:       <Value>{ value: core.getInput('unityProjectPath'),      mandatory: false,   default: process.env.GITHUB_WORKSPACE   },
-    unityBuildName:         <Value>{ value: core.getInput('unityBuildName'),        mandatory: true                                             },
-    unityBuildVersion:      <Value>{ value: core.getInput('unityBuildVersion'),     mandatory: true,                                            },      
-    unityBuildTarget:       <Value>{ value: core.getInput('unityBuildTarget'),      mandatory: true,                                            },
-    unityBuildMethod:       <Value>{ value: core.getInput('unityBuildMethod'),      mandatory: true                                             },
-    unityBuildPath:         <Value>{ value: core.getInput('unityBuildPath'),        mandatory: false,   default: 'build'                        },
-    unityCustomArguments:   <Value>{ value: core.getInput('unityCustomArguments'),  mandatory: false,   default: 'build'                        },
+    unityVersion:           <Value>{ value: core.getInput('unityVersion'),          mandatory: true                                                                                                                                                 },
+    unityProjectPath:       <Value>{ value: core.getInput('unityProjectPath'),      mandatory: false,   default: `${process.env.GITHUB_WORKSPACE}${process.env.UNITY_PROJECT_SUBFOLDER === '' ? '/' : ''}${process.env.UNITY_PROJECT_SUBFOLDER}`    },
+    unityBuildName:         <Value>{ value: core.getInput('unityBuildName'),        mandatory: true                                                                                                                                                 },
+    unityBuildVersion:      <Value>{ value: core.getInput('unityBuildVersion'),     mandatory: true,                                                                                                                                                },      
+    unityBuildTarget:       <Value>{ value: core.getInput('unityBuildTarget'),      mandatory: true,                                                                                                                                                },
+    unityBuildMethod:       <Value>{ value: core.getInput('unityBuildMethod'),      mandatory: true                                                                                                                                                 },
+    unityBuildPath:         <Value>{ value: core.getInput('unityBuildPath'),        mandatory: false,   default: 'build'                                                                                                                            },
+    unityCustomArguments:   <Value>{ value: core.getInput('unityCustomArguments'),  mandatory: false,   default: 'build'                                                                                                                            },
 };
 
 validateVariables(variables);
