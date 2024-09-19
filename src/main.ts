@@ -22,13 +22,13 @@ export async function run(): Promise<void> {
       "-batchmode",
       "-nographics",
       "-silent-crashes",
-      "-executeMethod " + variables.unityBuildMethod.value,
-      "-customBuildName " + variables.unityBuildName.value,
-      "-buildTarget " + variables.unityBuildTarget.value,
-      "-customBuildTarget " + variables.unityBuildTarget.value,
-      "-buildVersion " + variables.unityBuildVersion.value,
-      "-projectPath " + variables.unityProjectPath.value,
-      "-customBuildPath " + unityBuildFullpath,
+      "-executeMethod", variables.unityBuildMethod.value,
+      "-customBuildName", variables.unityBuildName.value,
+      "-buildTarget", variables.unityBuildTarget.value,
+      "-customBuildTarget", variables.unityBuildTarget.value,
+      "-buildVersion", variables.unityBuildVersion.value,
+      "-projectPath", variables.unityProjectPath.value,
+      "-customBuildPath", unityBuildFullpath,
       "-logfile -"
     ]
 
