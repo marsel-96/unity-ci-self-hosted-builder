@@ -25132,13 +25132,13 @@ async function run() {
             "-batchmode",
             "-nographics",
             "-silent-crashes",
-            "-executeMethod " + input_1.variables.unityBuildMethod.value,
-            "-customBuildName " + input_1.variables.unityBuildName.value,
-            "-buildTarget " + input_1.variables.unityBuildTarget.value,
-            "-customBuildTarget " + input_1.variables.unityBuildTarget.value,
-            "-buildVersion " + input_1.variables.unityBuildVersion.value,
-            "-projectPath " + input_1.variables.unityProjectPath.value,
-            "-customBuildPath " + unityBuildFullpath,
+            "-executeMethod", input_1.variables.unityBuildMethod.value,
+            "-customBuildName", input_1.variables.unityBuildName.value,
+            "-buildTarget", input_1.variables.unityBuildTarget.value,
+            "-customBuildTarget", input_1.variables.unityBuildTarget.value,
+            "-buildVersion", input_1.variables.unityBuildVersion.value,
+            "-projectPath", input_1.variables.unityProjectPath.value,
+            "-customBuildPath", unityBuildFullpath,
             "-logfile -"
         ];
         if (input_1.variables.unityCustomArguments.value) {
