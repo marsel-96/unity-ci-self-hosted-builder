@@ -3,6 +3,7 @@ import { runCommand } from "unity-ci-self-hosted-common/dist";
 import { logLines } from "unity-ci-self-hosted-common/dist";
 import { join, isAbsolute } from 'path'
 import { variables } from './input'
+import { writeFile } from 'fs/promises'
 
 
 /**
@@ -12,7 +13,7 @@ import { variables } from './input'
 export async function run(): Promise<void> {
   try {
     
-    let unityBuildFullpath = isAbsolute(variables.unityBuildPath.value) ? 
+    let unityBuildFullPath = isAbsolute(variables.unityBuildPath.value) ? 
       variables.unityBuildPath.value : 
       join(variables.GITHUB_WORKSPACE.value, variables.unityBuildPath.value)
 
@@ -28,7 +29,7 @@ export async function run(): Promise<void> {
       "-customBuildTarget", variables.unityBuildTarget.value,
       "-buildVersion", variables.unityBuildVersion.value,
       "-projectPath", variables.unityProjectPath.value,
-      "-customBuildPath", unityBuildFullpath,
+      "-customBuildPath", unityBuildFullPath,
       "-logfile -"
     ]
 
@@ -52,9 +53,17 @@ export async function run(): Promise<void> {
         '###########################',
       )
 
-      await runCommand('powershell', ['Get-ChildItem', unityBuildFullpath])
+      await runCommand('powershell', ['Get-ChildItem', unityBuildFullPath])
 
-      core.setOutput('unityBuildPath', unityBuildFullpath)
+      const versionFile = join(unityBuildFullPath, 'version.md')
+      const versionFileContent = 
+        `Name: ${variables.unityBuildName.value}\n` +
+        `Version: ${variables.unityBuildVersion.value}\n` +
+        `Target: ${variables.unityBuildTarget.value}\n`
+
+      await writeFile(versionFile, versionFileContent)
+
+      core.setOutput('unityBuildFullPath', unityBuildFullPath)
       core.setOutput('unityBuildName', variables.unityBuildName.value)
       core.setOutput('unityBuildVersion', variables.unityBuildVersion.value)
       core.setOutput('unityBuildTarget', variables.unityBuildTarget.value)

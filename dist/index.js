@@ -25117,13 +25117,14 @@ const dist_1 = __nccwpck_require__(1259);
 const dist_2 = __nccwpck_require__(1259);
 const path_1 = __nccwpck_require__(1017);
 const input_1 = __nccwpck_require__(6747);
+const promises_1 = __nccwpck_require__(3292);
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 async function run() {
     try {
-        let unityBuildFullpath = (0, path_1.isAbsolute)(input_1.variables.unityBuildPath.value) ?
+        let unityBuildFullPath = (0, path_1.isAbsolute)(input_1.variables.unityBuildPath.value) ?
             input_1.variables.unityBuildPath.value :
             (0, path_1.join)(input_1.variables.GITHUB_WORKSPACE.value, input_1.variables.unityBuildPath.value);
         let command = input_1.variables.UNITY_PATH.value;
@@ -25138,7 +25139,7 @@ async function run() {
             "-customBuildTarget", input_1.variables.unityBuildTarget.value,
             "-buildVersion", input_1.variables.unityBuildVersion.value,
             "-projectPath", input_1.variables.unityProjectPath.value,
-            "-customBuildPath", unityBuildFullpath,
+            "-customBuildPath", unityBuildFullPath,
             "-logfile -"
         ];
         if (input_1.variables.unityCustomArguments.value) {
@@ -25150,8 +25151,13 @@ async function run() {
         });
         if (exitCode === 0) {
             (0, dist_2.logLines)('', '', 'Build Succeeded!!', '', '###########################', '#       Build output      #', '###########################');
-            await (0, dist_1.runCommand)('powershell', ['Get-ChildItem', unityBuildFullpath]);
-            core.setOutput('unityBuildPath', unityBuildFullpath);
+            await (0, dist_1.runCommand)('powershell', ['Get-ChildItem', unityBuildFullPath]);
+            const versionFile = (0, path_1.join)(unityBuildFullPath, 'version.md');
+            const versionFileContent = `Name: ${input_1.variables.unityBuildName.value}\n` +
+                `Version: ${input_1.variables.unityBuildVersion.value}\n` +
+                `Target: ${input_1.variables.unityBuildTarget.value}\n`;
+            await (0, promises_1.writeFile)(versionFile, versionFileContent);
+            core.setOutput('unityBuildFullPath', unityBuildFullPath);
             core.setOutput('unityBuildName', input_1.variables.unityBuildName.value);
             core.setOutput('unityBuildVersion', input_1.variables.unityBuildVersion.value);
             core.setOutput('unityBuildTarget', input_1.variables.unityBuildTarget.value);
@@ -25243,6 +25249,14 @@ module.exports = require("events");
 
 "use strict";
 module.exports = require("fs");
+
+/***/ }),
+
+/***/ 3292:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs/promises");
 
 /***/ }),
 

@@ -35,7 +35,7 @@ inputs:
     description: 'Path to the Unity build output folder.'
 
 outputs:
-  unityBuildPath:
+  unityBuildFullPath:
     description: 'Path to the Unity build output folder.'
   unityBuildName:
     description: 'Unity build name.'
