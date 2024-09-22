@@ -24290,17 +24290,80 @@ __nccwpck_require__(4711);/******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 208:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require2_) => {
+/***/ 144:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require2_) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__exportStar(__nccwpck_require2_(208), exports);
+__exportStar(__nccwpck_require2_(410), exports);
+__exportStar(__nccwpck_require2_(293), exports);
+__exportStar(__nccwpck_require2_(560), exports);
+__exportStar(__nccwpck_require2_(881), exports);
+
+
+/***/ }),
+
+/***/ 881:
+/***/ ((__unused_webpack_module, exports) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+
+
+/***/ }),
+
+/***/ 208:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require2_) {
+
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.runCommand = runCommand;
 const child_process_1 = __nccwpck_require2_(81);
+const logging = __importStar(__nccwpck_require2_(410));
 async function runCommand(command, args) {
     let child = (0, child_process_1.spawn)(command, args);
     child.stdout.pipe(process.stdout);
-    child.stderr.pipe(process.stderr);
+    child.stderr.on('data', function (data) {
+        logging.logWithStyle('stderr: ' + data);
+    });
     const waitOutputCompletion = new Promise((resolve, _) => {
         child.stdout.on('end', () => {
             resolve();
@@ -24329,7 +24392,58 @@ async function runCommand(command, args) {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ForegroundColor = exports.TextEffect = void 0;
+exports.log = log;
+exports.logWithStyle = logWithStyle;
+exports.error = error;
+exports.startGroup = startGroup;
+exports.endGroup = endGroup;
+exports.warn = warn;
 exports.logLines = logLines;
+const ColorReset = "\x1b[0m";
+var TextEffect;
+(function (TextEffect) {
+    TextEffect["Bright"] = "\u001B[1m";
+    TextEffect["Dim"] = "\u001B[2m";
+    TextEffect["Underscore"] = "\u001B[4m";
+    TextEffect["Blink"] = "\u001B[5m";
+    TextEffect["Reverse"] = "\u001B[7m";
+    TextEffect["Hidden"] = "\u001B[8m";
+    TextEffect["None"] = "";
+})(TextEffect || (exports.TextEffect = TextEffect = {}));
+var ForegroundColor;
+(function (ForegroundColor) {
+    ForegroundColor["Black"] = "\u001B[30m";
+    ForegroundColor["Red"] = "\u001B[31m";
+    ForegroundColor["Green"] = "\u001B[32m";
+    ForegroundColor["Yellow"] = "\u001B[33m";
+    ForegroundColor["Blue"] = "\u001B[34m";
+    ForegroundColor["Magenta"] = "\u001B[35m";
+    ForegroundColor["Cyan"] = "\u001B[36m";
+    ForegroundColor["White"] = "\u001B[37m";
+})(ForegroundColor || (exports.ForegroundColor = ForegroundColor = {}));
+const errorPrefix = "::error::";
+const warningPrefix = "::warning::";
+const startGroupPrefix = "::group::";
+const endGroupPrefix = "::endgroup::";
+function log(message) {
+    console.log(message);
+}
+function logWithStyle(message, color = ForegroundColor.White, effect = TextEffect.None) {
+    console.log(effect + color + message + ColorReset);
+}
+function error(message) {
+    console.log(errorPrefix + message);
+}
+function startGroup(title) {
+    console.log(startGroupPrefix + title);
+}
+function endGroup(message) {
+    console.log(endGroupPrefix);
+}
+function warn(message) {
+    console.log(warningPrefix + message);
+}
 function logLines(...args) {
     console.log(args.join('\n'));
 }
@@ -24338,16 +24452,47 @@ function logLines(...args) {
 /***/ }),
 
 /***/ 293:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require2_) => {
 
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getUnityPath = getUnityPath;
+exports.getUnityPathFromProject = getUnityPathFromProject;
+exports.getUnityPathOrDefault = getUnityPathOrDefault;
+const fs_1 = __nccwpck_require2_(147);
+const path_1 = __nccwpck_require2_(17);
 function getUnityPath(platform, version) {
     if (platform === 'windows') {
-        return `C:\\Program Files\\Unity\\Hub\\Editor\\${version}\\Editor\\Unity.exe`;
+        const unityFullPath = `C:\\Program Files\\Unity\\Hub\\Editor\\${version}\\Editor\\Unity.exe`;
+        if ((0, fs_1.existsSync)(unityFullPath)) {
+            return unityFullPath;
+        }
+        else
+            throw new Error(`Unity not found at ${unityFullPath}`);
     }
     throw new Error(`Unsupported platform. Please specify 'windows' as platform`);
+}
+function getUnityPathFromProject(platform, unityProjectPath) {
+    const projectVersionFullPath = (0, path_1.join)(unityProjectPath, 'ProjectSettings', 'ProjectVersion.txt');
+    const data = (0, fs_1.readFileSync)(projectVersionFullPath, { encoding: 'utf8' });
+    for (const line of data.split('\n')) {
+        if (line.startsWith('m_EditorVersion:')) {
+            const version = line.split(':')[1].trim();
+            return getUnityPath(platform, version);
+        }
+    }
+    throw new Error('Unity version not found in ProjectVersion.txt');
+}
+function getUnityPathOrDefault(path, defaultPath) {
+    if (!path) {
+        return defaultPath;
+    }
+    if ((0, path_1.isAbsolute)(path)) {
+        return path;
+    }
+    else {
+        return (0, path_1.join)(defaultPath, path);
+    }
 }
 
 
@@ -24382,6 +24527,20 @@ function validateVariables(variables) {
 
 module.exports = __nccwpck_require__(2081);
 
+/***/ }),
+
+/***/ 147:
+/***/ ((module) => {
+
+module.exports = __nccwpck_require__(7147);
+
+/***/ }),
+
+/***/ 17:
+/***/ ((module) => {
+
+module.exports = __nccwpck_require__(1017);
+
 /***/ })
 
 /******/ 	});
@@ -24406,7 +24565,7 @@ module.exports = __nccwpck_require__(2081);
 /******/ 		// Execute the module function
 /******/ 		var threw = true;
 /******/ 		try {
-/******/ 			__webpack_modules__[moduleId](module, module.exports, __nccwpck_require2_);
+/******/ 			__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nccwpck_require2_);
 /******/ 			threw = false;
 /******/ 		} finally {
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
@@ -24422,25 +24581,13 @@ module.exports = __nccwpck_require__(2081);
 /******/ 	if (typeof __nccwpck_require2_ !== 'undefined') __nccwpck_require2_.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-var __webpack_exports__ = {};
-// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
-(() => {
-var exports = __webpack_exports__;
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.validateVariables = exports.getUnityPath = exports.logLines = exports.runCommand = void 0;
-var command_1 = __nccwpck_require2_(208);
-Object.defineProperty(exports, "runCommand", ({ enumerable: true, get: function () { return command_1.runCommand; } }));
-var log_1 = __nccwpck_require2_(410);
-Object.defineProperty(exports, "logLines", ({ enumerable: true, get: function () { return log_1.logLines; } }));
-var unity_1 = __nccwpck_require2_(293);
-Object.defineProperty(exports, "getUnityPath", ({ enumerable: true, get: function () { return unity_1.getUnityPath; } }));
-var validate_1 = __nccwpck_require2_(560);
-Object.defineProperty(exports, "validateVariables", ({ enumerable: true, get: function () { return validate_1.validateVariables; } }));
-
-})();
-
-module.exports = __webpack_exports__;
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
+/******/ 	var __webpack_exports__ = __nccwpck_require2_(144);
+/******/ 	module.exports = __webpack_exports__;
+/******/ 	
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map
@@ -25138,20 +25285,22 @@ exports.variables = {
     GITHUB_WORKSPACE: { value: process.env.GITHUB_WORKSPACE, mandatory: true },
     UNITY_PATH: {
         value: process.env.UNITY_PATH,
-        mandatory: false,
-        default: (0, dist_2.getUnityPath)('windows', core.getInput('unityVersion'))
+        mandatory: false
     },
     // Github action inputs
     unityVersion: { value: core.getInput('unityVersion'), mandatory: true },
-    unityProjectPath: { value: core.getInput('unityProjectPath'), mandatory: false, default: process.env.GITHUB_WORKSPACE },
     unityBuildName: { value: core.getInput('unityBuildName'), mandatory: true },
     unityBuildVersion: { value: core.getInput('unityBuildVersion'), mandatory: true, },
     unityBuildTarget: { value: core.getInput('unityBuildTarget'), mandatory: true, },
     unityBuildMethod: { value: core.getInput('unityBuildMethod'), mandatory: true },
-    unityBuildPath: { value: core.getInput('unityBuildPath'), mandatory: false, default: 'build' },
+    unityProjectPath: { value: core.getInput('unityProjectPath'), mandatory: false, default: '' },
+    unityBuildPath: { value: core.getInput('unityBuildPath'), mandatory: false, default: '' },
     unityCustomArguments: { value: core.getInput('unityCustomArguments'), mandatory: false, default: 'build' },
 };
-(0, dist_1.validateVariables)(exports.variables);
+(0, dist_2.validateVariables)(exports.variables);
+exports.variables.unityProjectPath.value = (0, dist_1.getUnityPathOrDefault)(exports.variables.unityProjectPath.value, exports.variables.GITHUB_WORKSPACE.value);
+exports.variables.unityBuildPath.value = (0, dist_1.getUnityPathOrDefault)(exports.variables.unityBuildPath.value, exports.variables.unityProjectPath.value);
+exports.variables.UNITY_PATH.value = exports.variables.UNITY_PATH.value ?? (0, dist_1.getUnityPathFromProject)("windows", exports.variables.unityProjectPath.value);
 
 
 /***/ }),
@@ -25187,8 +25336,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(2186));
+const logging = __importStar(__nccwpck_require__(1259));
 const dist_1 = __nccwpck_require__(1259);
-const dist_2 = __nccwpck_require__(1259);
 const path_1 = __nccwpck_require__(1017);
 const input_1 = __nccwpck_require__(6747);
 const promises_1 = __nccwpck_require__(3292);
@@ -25198,11 +25347,12 @@ const promises_1 = __nccwpck_require__(3292);
  */
 async function run() {
     try {
-        let unityBuildFullPath = (0, path_1.isAbsolute)(input_1.variables.unityBuildPath.value) ?
-            input_1.variables.unityBuildPath.value :
-            (0, path_1.join)(input_1.variables.GITHUB_WORKSPACE.value, input_1.variables.unityBuildPath.value);
-        let command = input_1.variables.UNITY_PATH.value;
-        let args = [
+        console.log(`--------------------------------------------------------------------`);
+        logging.logWithStyle('Starting Unity Build', logging.ForegroundColor.Cyan);
+        console.log(`--------------------------------------------------------------------`);
+        const unityBuildFullPath = input_1.variables.unityBuildPath.value;
+        const command = input_1.variables.UNITY_PATH.value;
+        const args = [
             "-quit",
             "-batchmode",
             "-nographics",
@@ -25219,13 +25369,21 @@ async function run() {
         if (input_1.variables.unityCustomArguments.value) {
             args.push(input_1.variables.unityCustomArguments.value);
         }
-        let exitCode = await (0, dist_1.runCommand)(command, args)
-            .catch((error) => {
-            throw new Error(`\n\nException while running unity command. ${error}`);
-        });
+        let exitCode;
+        try {
+            core.startGroup('Running Unity Command');
+            exitCode = await (0, dist_1.runCommand)(command, args);
+            core.endGroup();
+        }
+        catch (error) {
+            core.endGroup();
+            throw new Error('Exception while running unity command', { cause: error });
+        }
         if (exitCode === 0) {
-            (0, dist_2.logLines)('', '', 'Build Succeeded!!', '', '###########################', '#       Build output      #', '###########################');
-            await (0, dist_1.runCommand)('powershell', ['Get-ChildItem', unityBuildFullPath]);
+            console.log(`--------------------------------------------------------------------`);
+            logging.logWithStyle('Build Succeeded!', logging.ForegroundColor.Green);
+            console.log(`--------------------------------------------------------------------`);
+            console.log(`Writing version to version.md`);
             const versionFile = (0, path_1.join)(unityBuildFullPath, 'version.md');
             const versionFileContent = `Name: ${input_1.variables.unityBuildName.value}\n` +
                 `Version: ${input_1.variables.unityBuildVersion.value}\n` +
@@ -25243,11 +25401,11 @@ async function run() {
     }
     catch (error) {
         if (error instanceof Error) {
-            console.error("\n" + error.message);
-            core.setFailed("Error during build run");
+            core.error(error);
         }
         else
-            core.setFailed("An unexpected error occurred");
+            core.error("An unexpected error occurred");
+        core.setFailed("Error during build run");
     }
 }
 

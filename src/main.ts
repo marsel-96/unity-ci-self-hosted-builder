@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
+import * as logging from "unity-ci-self-hosted-common/dist";
 import { runCommand } from "unity-ci-self-hosted-common/dist";
-import { logLines } from "unity-ci-self-hosted-common/dist";
-import { join, isAbsolute } from 'path'
+import { join } from 'path'
 import { variables } from './input'
 import { writeFile } from 'fs/promises'
 
@@ -13,12 +13,13 @@ import { writeFile } from 'fs/promises'
 export async function run(): Promise<void> {
   try {
     
-    let unityBuildFullPath = isAbsolute(variables.unityBuildPath.value) ? 
-      variables.unityBuildPath.value : 
-      join(variables.GITHUB_WORKSPACE.value, variables.unityBuildPath.value)
+    console.log(`--------------------------------------------------------------------`)
+    logging.logWithStyle('Starting Unity Build', logging.ForegroundColor.Cyan)
+    console.log(`--------------------------------------------------------------------`)
 
-    let command = variables.UNITY_PATH.value
-    let args = [
+    const unityBuildFullPath = variables.unityBuildPath.value
+    const command = variables.UNITY_PATH.value
+    const args = [
       "-quit",
       "-batchmode",
       "-nographics",
@@ -37,23 +38,24 @@ export async function run(): Promise<void> {
       args.push(variables.unityCustomArguments.value)
     }
     
-    let exitCode = await runCommand(command, args)
-      .catch((error) => {
-        throw new Error(`\n\nException while running unity command. ${error}`);
-      })
+    let exitCode
+
+    try {
+      core.startGroup('Running Unity Command')
+      exitCode = await runCommand(command, args)
+      core.endGroup()
+    } catch(error){
+      core.endGroup()
+      throw new Error('Exception while running unity command', {cause: error});
+    }
 
     if (exitCode === 0) {
-      logLines(
-        '',
-        '',
-        'Build Succeeded!!',
-        '',
-        '###########################',
-        '#       Build output      #',
-        '###########################',
-      )
 
-      await runCommand('powershell', ['Get-ChildItem', unityBuildFullPath])
+      console.log(`--------------------------------------------------------------------`)
+      logging.logWithStyle('Build Succeeded!', logging.ForegroundColor.Green)
+      console.log(`--------------------------------------------------------------------`)
+  
+      console.log(`Writing version to version.md`)
 
       const versionFile = join(unityBuildFullPath, 'version.md')
       const versionFileContent = 
@@ -75,9 +77,10 @@ export async function run(): Promise<void> {
 
   } catch (error) {
     if (error instanceof Error) {
-      console.error("\n" + error.message)
-      core.setFailed("Error during build run")
+      core.error(error)
     }
-    else core.setFailed("An unexpected error occurred")
+    else core.error("An unexpected error occurred")
+
+    core.setFailed("Error during build run")
   }
 }

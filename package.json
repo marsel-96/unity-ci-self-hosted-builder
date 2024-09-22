@@ -1,7 +1,7 @@
 {
   "name": "unity-ci-self-hosted-builder",
   "description": "Unity CI Self Hosted Builder",
-  "version": "0.1.0",
+  "version": "0.1.5",
   "author": "Marco Selleri <marco.selleri96@gmail.com>",
   "keywords": [
     "actions",
